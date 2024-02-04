@@ -17,6 +17,7 @@ class MarvelService {
     }
 
     getCharacter = async (id) => {
+         
         const res = await this.getResource(`${this._apibase}characters/${id}?${this._apikey}`);
         return this._transformCharacter(res.data.results[0]);
     }
@@ -24,6 +25,9 @@ class MarvelService {
     _transformCharacter = (char) => {
         return {
             name: char.name,
+            // реалізація виведення дескріпшена з обмеженою кількістью символів,або 
+            // якщо сервер дав undefined то буде вивидене повідомлення про відсутність 
+            // 
             description: char.description ? `${char.description.slice(0, 210)}...` : 'There is no description for this character',
             thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
             homepage: char.urls[0].url,
