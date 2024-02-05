@@ -8,16 +8,19 @@ import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
 
 class RandomChar extends Component {
-    constructor(props) {
-        super(props);
-        this.updateChat()
-    }
     state = {
         char: {},
         loading: true,
         error: false
     }
 
+    componentDidMount() {
+        this.updateChat()
+        // this.timerId = setInterval(this.updateChat,3000)
+    }
+    componentWillUnmount() {
+        clearInterval(this.timerId)
+    }
     marvelService = new MarvelService()
 
     onCharLoaded = (char) => {
@@ -46,6 +49,7 @@ class RandomChar extends Component {
     }
 
     render() {
+        
         const {char,loading,error} = this.state
         const errorMassage = error? <ErrorMessage/> : null;
         const spinner = loading? <Spinner/> : null
@@ -73,11 +77,12 @@ class RandomChar extends Component {
     }
 }
 const View = ({char}) => {
-
     const {name,description,thumbnail,homepage,wiki} = char
+    const isWithoutImg = thumbnail.includes("image_not_available")
+    const letChangeObjectFit = isWithoutImg? {objectFit: 'contain'} : null
     return(
         <div className="randomchar__block">
-             <img src={thumbnail} alt="Random character" className="randomchar__img"/>
+             <img style={letChangeObjectFit} src={thumbnail} alt="Random character" className="randomchar__img"/>
                     <div className="randomchar__info">
                         <p className="randomchar__name">{name}</p>
                         <p className="randomchar__descr">
