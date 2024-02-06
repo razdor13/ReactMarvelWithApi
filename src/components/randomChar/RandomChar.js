@@ -15,8 +15,8 @@ class RandomChar extends Component {
     }
 
     componentDidMount() {
-        this.updateChat()
-        // this.timerId = setInterval(this.updateChat,3000)
+        this.updateChar()
+        // this.timerId = setInterval(this.updateChar,3000)
     }
     componentWillUnmount() {
         clearInterval(this.timerId)
@@ -38,7 +38,7 @@ class RandomChar extends Component {
     }
 
 
-    updateChat = () => {
+    updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000)
         this.marvelService
         .getCharacter(id)
@@ -67,7 +67,10 @@ class RandomChar extends Component {
                     <p className="randomchar__title">
                         Or choose another one
                     </p>
-                    <button className="button button__main">
+                    <button 
+                    className="button button__main"
+                    onClick={this.updateChar}
+                    >
                         <div className="inner">try it</div>
                     </button>
                     <img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>

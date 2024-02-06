@@ -39,7 +39,7 @@ class CharList extends Component {
     renderItems(arr) {
         const items =  arr.map((item) => {
             const isWithoutImg = item.thumbnail.includes("image_not_available")
-            const letChangeObjectFit = isWithoutImg? {objectFit: 'contain'} : null
+            const letChangeObjectFit = isWithoutImg? {objectFit: 'fill'} : null
             
             return (
                 <li 
