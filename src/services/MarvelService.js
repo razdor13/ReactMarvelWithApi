@@ -24,6 +24,7 @@ class MarvelService {
 
     _transformCharacter = (char) => {
         return {
+            id: char.id,
             name: char.name,
             // реалізація виведення дескріпшена з обмеженою кількістью символів,або 
             // якщо сервер дав undefined то буде вивидене повідомлення про відсутність 
