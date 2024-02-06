@@ -5,7 +5,6 @@ import MarvelService from '../../services/MarvelService';
 import './charList.scss';
 
 class CharList extends Component {
-
     state = {
         charList: [],
         loading: true,
@@ -45,7 +44,8 @@ class CharList extends Component {
                 <li 
                     className="char__item"
                     key={item.id}
-                    onClick={() => this.props.onCharSelected(item.id)}>
+                    onClick={() => this.props.onCharSelected(item.id)}
+                    >
                         <img src={item.thumbnail} alt={item.name} style={letChangeObjectFit}/>
                         <div className="char__name">{item.name}</div>
                 </li>
