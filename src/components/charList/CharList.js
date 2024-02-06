@@ -1,72 +1,87 @@
-import { Component } from 'react';
-import './charList.scss';
-import abyss from '../../resources/img/abyss.jpg';
+import {Component} from 'react';
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMassage/ErrorMassage';
 import MarvelService from '../../services/MarvelService';
-
+import './charList.scss';
 
 class CharList extends Component {
-    id = 0
-    state = {
-        loading : true
-    }
 
-    marvelService = new MarvelService()
+    state = {
+        charList: [],
+        loading: true,
+        error: false
+    }
+    
+    marvelService = new MarvelService();
 
     componentDidMount() {
-        this.onLoadCharacter()
+        this.marvelService.getAllCharacters()
+            .then(this.onCharListLoaded)
+            .catch(this.onError)
     }
 
-    onLoadCharInState = (res) => {
+    onCharListLoaded = (charList) => {
         this.setState({
-            res, 
-            loading : false
+            charList,
+            loading: false
         })
     }
-    
-    onLoadCharacter = () => {
-        this.marvelService
-        .getAllCharacters()
-        .then(this.onLoadCharInState)
-        .catch(res => console.log(res))
+
+    onError = () => {
+        this.setState({
+            error: true,
+            loading: false
+        })
     }
-    
-    
-    
-    
-    
+
+    // this method create for optimization
+    // to not put this contruction in render
+    renderItems(arr) {
+        const items =  arr.map((item) => {
+            let imgStyle = {'objectFit' : 'cover'};
+            if (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+                imgStyle = {'objectFit' : 'unset'};
+            }
+            
+            return (
+                <li 
+                    className="char__item"
+                    key={item.id}
+                    onClick={() => this.props.onCharSelected(item.id)}>
+                        <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
+                        <div className="char__name">{item.name}</div>
+                </li>
+            )
+        });
+        // А эта конструкция вынесена для центровки спиннера/ошибки
+        return (
+            <ul className="char__grid">
+                {items}
+            </ul>
+        )
+    }
+
     render() {
-        const {loading,res} = this.state
-        const content = loading? null : <Elements char={res}/>
+
+        const {charList, loading, error} = this.state;
+        
+        const items = this.renderItems(charList);
+
+        const errorMessage = error ? <ErrorMessage/> : null;
+        const spinner = loading ? <Spinner/> : null;
+        const content = !(loading || error) ? items : null;
+
         return (
             <div className="char__list">
-                <ul className="char__grid">
-                    {content}
-                </ul>
+                {errorMessage}
+                {spinner}
+                {content}
                 <button className="button button__main button__long">
                     <div className="inner">load more</div>
                 </button>
             </div>
         )
     }
-}
-
-const Elements = ({char}) => {
-    
-    let id = 0
-    return (
-        char.map(item => {
-        const isWithoutImg = item.thumbnail.includes("image_not_available")
-        const letChangeObjectFit = isWithoutImg? {objectFit: 'fill'} : null
-        id ++
-        return(
-            <li key={id} className="char__item">
-                <img style={letChangeObjectFit} src={item.thumbnail} alt="abyss"/>
-                <div className="char__name">{item.name}</div>
-            </li> 
-        )          
-    }))
-    
-    
 }
 
 export default CharList;
