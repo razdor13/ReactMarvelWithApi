@@ -46,7 +46,6 @@ class CharList extends Component {
             offset: offset+9,
             charEnded : ended
         }))
-        debugger
     }
 
     onError = () => {
@@ -56,18 +55,49 @@ class CharList extends Component {
         })
     }
 
+    itemRefs = [];
+
+    setRef = (ref) => {
+        this.itemRefs.push(ref);
+    }
+    
+    focusOnItem = (id) => {
+        // Я реалізував варіант трохи складніший, з класом і фокусом.
+        // Однак теоретично можна залишити лише фокус, і використовувати його в стилях замість класу.
+        // Насправді, рішення з CSS-класом можна зробити, витягнувши персонажа
+        // у окремий компонент. Але код буде більший, з'явиться новий стан
+        // і не факт, що ми виграємо в оптимізації за рахунок більшої кількості елементів.
+        // У разі можливості, не зловживайте рефами, використовуйте їх тільки у крайніх випадках.
+        this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
+        this.itemRefs[id].classList.add('char__item_selected');
+        this.itemRefs[id].focus();
+        console.log(this.itemRefs[this.itemRefs.length - 1])
+    }
+
     // this method create for optimization
     // to not put this contruction in render
     renderItems(arr) {
-        const items =  arr.map((item) => {
+        const items =  arr.map((item,i) => {
             const isWithoutImg = item.thumbnail.includes("image_not_available")
             const letChangeObjectFit = isWithoutImg? {objectFit: 'fill'} : null
             
             return (
                 <li 
+                    ref={this.setRef}
                     className="char__item"
                     key={item.id}
-                    onClick={() => this.props.onCharSelected(item.id)}
+                    onClick={() => {
+                        this.props.onCharSelected(item.id);
+                        this.focusOnItem(i);
+                    }}
+                    tabIndex={0}
+                    onKeyPress={(e) => {
+                        e.preventDefault()
+                        if (e.key === ' ' || e.key === "Enter") {
+                            this.props.onCharSelected(item.id);
+                            this.focusOnItem(i);
+                        }
+                    }}
                     >
                         <img src={item.thumbnail} alt={item.name} style={letChangeObjectFit}/>
                         <div className="char__name">{item.name}</div>
@@ -101,6 +131,7 @@ class CharList extends Component {
                 disabled={newItemLoading}
                 style={{display : charEnded? 'none' : 'block'}}
                 onClick={()=> this.onRequest(offset)}
+                
                 >
                     <div className="inner">load more</div>
                 </button>
