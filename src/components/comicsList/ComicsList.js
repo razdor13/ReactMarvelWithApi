@@ -8,7 +8,6 @@ import ErrorMessage from '../errorMassage/ErrorMassage';
 
 
 const ComicsList = () => {
-
     const {error,loading,getComics}=useMarvelService()
     const [comicsList, setComicsList] = useState([])
     const [newItemLoading, setnewItemLoading] = useState(false);
@@ -22,7 +21,7 @@ const ComicsList = () => {
 
     const onRequest = (offset,initial) => {
         initial ? setnewItemLoading(false) : setnewItemLoading(true);
-        getComics()
+        getComics(offset)
         .then(onComicsLoaded)
         
     }
