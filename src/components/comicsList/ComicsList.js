@@ -1,9 +1,8 @@
 import './comicsList.scss';
-import uw from '../../resources/img/UW.png';
-import xMen from '../../resources/img/x-men.png';
 import useMarvelService from '../../services/MarvelService';
 import { useEffect, useState } from 'react';
-
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMassage/ErrorMassage';
 
 
 
@@ -11,25 +10,32 @@ import { useEffect, useState } from 'react';
 const ComicsList = () => {
 
     const {error,loading,getComics}=useMarvelService()
-
     const [comicsList, setComicsList] = useState([])
-    const [offset, setOffset] = useState(210);
-    const [charEnded, setCharEnded] = useState(false);
+    const [newItemLoading, setnewItemLoading] = useState(false);
+    const [offset, setOffset] = useState(0);
+    const [comicsEnded, setComicsEnded] = useState(false);
 
     useEffect(()=> {
-        onRequest()
+        onRequest(offset,true)
         
     },[])
 
-    const onRequest = () => {
+    const onRequest = (offset,initial) => {
+        initial ? setnewItemLoading(false) : setnewItemLoading(true);
         getComics()
         .then(onComicsLoaded)
         
     }
 
     const onComicsLoaded = (newComicsList) => {
+        let ended = false;
+        if (newComicsList.length < 8) {
+            ended = true;
+        }
         setComicsList(comicsList => [...comicsList, ...newComicsList])
+        setnewItemLoading(false);
         setOffset(offset => offset+8)
+        setComicsEnded(ended);
         
     }
 
@@ -61,10 +67,21 @@ const ComicsList = () => {
 
 
     const items = renderItems(comicsList)
-    
+    const errorMessage = error ? <ErrorMessage/> : null;
+    const spinner = loading && !newItemLoading ? <Spinner/> : null;
+
     return (
         <div className="comics__list">
+            {errorMessage}
+            {spinner}
             {items}
+            <button 
+                disabled={newItemLoading} 
+                style={{'display' : comicsEnded ? 'none' : 'block'}}
+                className="button button__main button__long"
+                onClick={() => onRequest(offset)}>
+                <div className="inner">load more</div>
+            </button>
         </div>
     )
 }

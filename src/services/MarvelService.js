@@ -7,7 +7,6 @@ const  useMarvelService = () => {
 
 
     const _apiBase = 'https://gateway.marvel.com:443/v1/public/'
-    const _apiComics = 'https://gateway.marvel.com:443/v1/public/comics?limit=8'
     const _apiKey = 'apikey=f39d2a04760f161b2abf7c8817a46165'
     const _baseOffset = 210
     
