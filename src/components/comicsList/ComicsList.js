@@ -32,9 +32,9 @@ const ComicsList = () => {
             ended = true;
         }
         setComicsList(comicsList => [...comicsList, ...newComicsList])
-        setnewItemLoading(false);
+        setnewItemLoading(newItemLoading => false);
         setOffset(offset => offset+8)
-        setComicsEnded(ended);
+        setComicsEnded(charEnded => ended);
         
     }
 
