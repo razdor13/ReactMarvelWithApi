@@ -15,6 +15,7 @@ const CharList = (props) => {
 
     useEffect(() => {
         onRequest(offset,true)
+        
     },[])//useEffect з пустим масивом виконається (ініціалізується лише один раз)(заміна componentDidMount)
         // також не дивлячись на те що ми запускаємо цю функцію  onRequest() перед ініцаілізацію
         //вона стрілочна, суть в тому що useEffect всеодно запуститься після рендеру .
@@ -40,7 +41,7 @@ const CharList = (props) => {
     }
 
     const itemRefs = useRef([]);
-    
+   
     const focusOnItem = (id) => {
         // Я реалізував варіант трохи складніший, з класом і фокусом.
         // Однак теоретично можна залишити лише фокус, і використовувати його в стилях замість класу.
@@ -50,7 +51,7 @@ const CharList = (props) => {
         // У разі можливості, не зловживайте рефами, використовуйте їх тільки у крайніх випадках.
         itemRefs.current.forEach(item => item.classList.remove('char__item_selected'));
         itemRefs.current[id].classList.add('char__item_selected');
-        // itemRefs.current[id].focus();
+        itemRefs.current[id].focus();
     }
 
     // this method create for optimization
