@@ -15,6 +15,7 @@ const ComicsList = () => {
     const [offset, setOffset] = useState(0);
     const [comicsEnded, setComicsEnded] = useState(false);
 
+
     useEffect(()=> {
         onRequest(offset,true)
         
@@ -41,7 +42,7 @@ const ComicsList = () => {
 
     function renderItems (arr) {
         const items = arr.map((item,i)=> {
-            
+            console.log(item.id)
             return (
                 <li 
                 className="comics__item"

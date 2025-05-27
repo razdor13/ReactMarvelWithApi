@@ -4,20 +4,21 @@ import { useState, useEffect } from 'react';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMassage/ErrorMassage';
-import AppBanner from "../appBanner/AppBanner";
 import './singleComicPage.scss';
 
 const SingleComicPage = () => {
     const {comicId} = useParams();
     const [comic, setComic] = useState(null);
     const {loading, error, getComic, clearError} = useMarvelService();
-
+    
     useEffect(() => {
         updateComic()
+        
     }, [comicId])
 
     const updateComic = () => {
         clearError();
+        
         getComic(comicId)
             .then(onComicLoaded)
     }
@@ -32,7 +33,6 @@ const SingleComicPage = () => {
 
     return (
         <>
-            <AppBanner/>
             {errorMessage}
             {spinner}
             {content}
@@ -50,10 +50,10 @@ const View = ({comic}) => {
                 <h2 className="single-comic__name">{title}</h2>
                 <p className="single-comic__descr">{description}</p>
                 <p className="single-comic__descr">{pageCount}</p>
-                <p className="single-comic__descr">Language: {language}</p>
+                <p className="single-comic__descr">Language12312: {language}</p>
                 <div className="single-comic__price">{price}</div>
             </div>
-            <Link to="/comics" className="single-comic__back">Back to all</Link>
+            <Link to="/comics" className="single-comic__back">1Back to all</Link>
         </div>
     )
 }

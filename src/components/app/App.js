@@ -11,7 +11,8 @@ const SinglePage = lazy(() => import("../pages/singlePage"));
 const SingleCharacterLayout = lazy(() =>
     import("../pages/singleCharacterLayout/SingleCharacterLayout")
 );
-const SingleComicLayout = lazy(() => import('../pages/singleComicLayout/SingleComicLayout'));
+const SingleComicPage = lazy(() => import('../pages/SingleComicPage'));
+
 const App = () => {
     return (
         <Router basename="/ReactMarvelWithApi">
@@ -23,10 +24,10 @@ const App = () => {
                             <Route path="/" element={<MainPage />} />
                             <Route path="/comics" element={<ComicsPage />} />
                             <Route
-                                path="/comics/:Id"
+                                path="/comics/:comicId"
                                 element={
                                     <SinglePage
-                                        Component={SingleComicLayout}
+                                        Component={SingleComicPage}
                                         dataType="comic"
                                     />
                                 }
