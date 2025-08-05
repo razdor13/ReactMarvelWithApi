@@ -15,7 +15,7 @@ const SingleComicPage = lazy(() => import('../pages/SingleComicPage'));
 
 const App = () => {
     return (
-        <Router basename="/ReactMarvelWithApi">
+        <Router >
             <div className="app">
                 <AppHeader />
                 <main>
