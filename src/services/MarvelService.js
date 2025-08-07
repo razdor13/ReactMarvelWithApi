@@ -1,5 +1,5 @@
-import { useHttp } from "../hooks/http.hooks"
 
+import { useHttp } from "../hooks/http.hooks";
 
 const useMarvelService = () => {
 	const {loading, request, error, clearError} = useHttp();
@@ -94,6 +94,11 @@ const useMarvelService = () => {
 	}
 }
 
+// all
+// https://gateway.marvel.com:443/v1/public/characters?apikey=10877f709e567804be49abd6a4c6cbcd
+
+//limit 9 offset 210
+// https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=210&apikey=10877f709e567804be49abd6a4c6cbcd
 
 
-export default useMarvelService
+export default useMarvelService;
